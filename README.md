@@ -2,6 +2,8 @@
 
 ####About
 
+![Image](http://i.imgur.com/r4ks8C2.png "Image")
+
 Cold Wallet for XRP.
 
 * Payments
@@ -9,12 +11,10 @@ Cold Wallet for XRP.
 * Account Settings
 * Set Signer List
 
-####Requires
-
-* [Visual Studio 2015 Runtime] (https://www.microsoft.com/en-au/download/details.aspx?id=48145)
 
 
-TODO
+
+TODO: Some user doco
 
 
 ####Compiling
