@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AF229A3E-AEA8-46D5-927C-9FD4CA1099CE}</ProjectGuid>
+    <RootNamespace>xrp_wallet</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\Systems\Librarys\OpenSSL-Win64\include;D:\Systems\Librarys\boost_1_59_0;D:\Systems\Librarys\wxWidgets3.1\include\msvc;D:\Systems\Librarys\wxWidgets3.1\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Systems\Librarys\boost_1_59_0\stage\lib;D:\Systems\Librarys\wxWidgets3.1\lib\vc_x64_lib;D:\Systems\Librarys\OpenSSL-Win64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>D:\Systems\Librarys\OpenSSL-Win64\include;D:\Systems\Librarys\boost_1_59_0;D:\Systems\Librarys\wxWidgets3.1\include\msvc;D:\Systems\Librarys\wxWidgets3.1\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Systems\Librarys\boost_1_59_0\stage\lib;D:\Systems\Librarys\wxWidgets3.1\lib\vc_x64_lib;D:\Systems\Librarys\OpenSSL-Win64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\Source;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\srcp256k1;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\ed25519-donna;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\beast\include;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\beast\extras;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\secp256k1;$(ProjectDir)\..\..\Extras\QR-Code\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>VC/static/libeay32MTd.lib;VC/static/ssleay32MTd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\Source;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\srcp256k1;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\ed25519-donna;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\beast\include;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\beast\extras;$(ProjectDir)\..\..\Extras\ripple-libpp\extras\rippled\src\secp256k1;$(ProjectDir)\..\..\Extras\QR-Code\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>VC/static/libeay32MT.lib;VC/static/ssleay32MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(ProjectDir)..\..\Run\$(TargetName)$(TargetExt)</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Extras\ripple-libpp\extras\rippled\src\ripple\unity\ed25519_donna.c" />
+    <ClCompile Include="..\..\Extras\ripple-libpp\src\unity\ripple-libpp.cpp" />
+    <ClCompile Include="..\..\Source\DialogAccountSettings.cpp" />
+    <ClCompile Include="..\..\Source\DialogQR.cpp" />
+    <ClCompile Include="..\..\Source\DialogSignList.cpp" />
+    <ClCompile Include="..\..\Source\DialogSusPay.cpp" />
+    <ClCompile Include="..\..\Source\PanelQRCode.cpp" />
+    <ClCompile Include="..\..\Source\stdafx.cpp" />
+    <ClCompile Include="..\..\Source\Account.cpp" />
+    <ClCompile Include="..\..\Source\AccountManager.cpp" />
+    <ClCompile Include="..\..\Source\Xrp_WalletApp.cpp" />
+    <ClCompile Include="..\..\Source\Xrp_WalletFrm.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\DialogAccountSettings.h" />
+    <ClInclude Include="..\..\Source\DialogQR.h" />
+    <ClInclude Include="..\..\Source\DialogSignList.h" />
+    <ClInclude Include="..\..\Source\DialogSusPay.h" />
+    <ClInclude Include="..\..\Source\PanelQRCode.h" />
+    <ClInclude Include="..\..\Source\Singleton.hpp" />
+    <ClInclude Include="..\..\Source\stdafx.hpp" />
+    <ClInclude Include="..\..\Source\Account.hpp" />
+    <ClInclude Include="..\..\Source\AccountManager.hpp" />
+    <ClInclude Include="..\..\Source\Xrp_WalletApp.h" />
+    <ClInclude Include="..\..\Source\Xrp_WalletFrm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Source\Xrp_WalletApp.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

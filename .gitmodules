@@ -1,0 +1,7 @@
+[submodule "Extras/QR-Code"]
+	path = Extras/QR-Code
+	url = https://github.com/nayuki/QR-Code-generator.git
+	
+[submodule "Extras/ripple-libpp"]
+	path = Extras/ripple-libpp
+	url = https://github.com/ripple/ripple-libpp.git
