@@ -1,4 +1,4 @@
-object frmNewForm_2: TfrmNewForm
+object frmNewForm: TfrmNewForm
   Left = 8
   Top = 8
   AutoScroll = False
@@ -140,6 +140,7 @@ object frmNewForm_2: TfrmNewForm
     Height = 33
     Caption = 'Cancel'
     TabOrder = 3
+    EVT_BUTTON = 'mCancelButtonClick'
     Wx_BKColor = clBlack
     Wx_ButtonStyle = []
     Wx_Class = 'wxButton'

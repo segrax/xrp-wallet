@@ -92,7 +92,7 @@ void cXrp_WalletFrm::CreateGUIControls() {
 	WxNotebook1->AddPage(WxNoteBookPage1, _("Overview"));
 
 	WxNoteBookPage2 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE2, wxPoint(4, 26), wxSize(612, 246));
-	WxNotebook1->AddPage(WxNoteBookPage2, _("Wallets"));
+	WxNotebook1->AddPage(WxNoteBookPage2, _("Accounts"));
 
 	mWalletsList = new wxListCtrl(WxNoteBookPage2, ID_MWALLETS, wxPoint(13, 16), wxSize(585, 166), wxLC_REPORT | wxLC_EDIT_LABELS, wxDefaultValidator, _("mWalletsList"));
 	mWalletsList->InsertColumn(0, _("Created"), wxLIST_FORMAT_LEFT, 140);
@@ -100,9 +100,9 @@ void cXrp_WalletFrm::CreateGUIControls() {
 	mWalletsList->InsertColumn(2, _("Seq."), wxLIST_FORMAT_LEFT, 50);
 	mWalletsList->InsertColumn(3, _("XRP"), wxLIST_FORMAT_LEFT, 100);
 
-	mWalletBtnCreate = new wxButton(WxNoteBookPage2, ID_MWALLETBTNCREATE, _("Create Wallet"), wxPoint(14, 200), wxSize(107, 32), 0, wxDefaultValidator, _("mWalletBtnCreate"));
+	mWalletBtnCreate = new wxButton(WxNoteBookPage2, ID_MWALLETBTNCREATE, _("Create Account"), wxPoint(14, 200), wxSize(107, 32), 0, wxDefaultValidator, _("mWalletBtnCreate"));
 
-	mWalletBtnImport = new wxButton(WxNoteBookPage2, ID_MWALLETBTNIMPORT, _("Import Wallet"), wxPoint(150, 200), wxSize(107, 32), 0, wxDefaultValidator, _("mWalletBtnImport"));
+	mWalletBtnImport = new wxButton(WxNoteBookPage2, ID_MWALLETBTNIMPORT, _("Import Account"), wxPoint(150, 200), wxSize(107, 32), 0, wxDefaultValidator, _("mWalletBtnImport"));
 
 	WxStaticText4 = new wxStaticText(WxNoteBookPage2, ID_WXSTATICTEXT4, _("Drops"), wxPoint(554, 212), wxDefaultSize, 0, _("WxStaticText4"));
 
@@ -322,15 +322,16 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
         uint64_t ExecuteTime = DialogSus.GetExecuteAfter();
         uint64_t CancelTime = DialogSus.GetCancelledAfter();
 
+        // Ensure we have atleast one executable state
         if (CancelTime || ExecuteTime || ProofText.size()) {
             Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreateSuspended( Destination, AmountDrops, CancelTime, ExecuteTime, ProofText ) ) );
-        }
-        else {
+        } else {
             wxMessageBox( "No suspended payment options provided" );
             return;
         }
-    }
-    else {
+
+    } else {
+        // Standard Payment
         Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreatePayment( Destination, AmountDrops ) ) );
     }
 
