@@ -78,19 +78,21 @@ class cXrp_WalletFrm : public wxFrame
     void mWalletListPopupMenu_AccountSettings( wxCommandEvent& event );
     void mButtonSignForClick( wxCommandEvent& event );
     void mTxSignWithWalletSelected( wxCommandEvent& event );
-		void mTxFeeDropsUpdated(wxCommandEvent& event);
-		void mRPCShowQRCodeClick(wxCommandEvent& event);
-		void mAddressBookListItemActivated(wxListEvent& event);
-		void mWalletListPopupMenu_AccountInfo(wxCommandEvent& event);
-		void mWalletListPopupMenu_LoadAccountInfo(wxCommandEvent& event);
+	void mTxFeeDropsUpdated(wxCommandEvent& event);
+	void mRPCShowQRCodeClick(wxCommandEvent& event);
+	void mAddressBookListItemActivated(wxListEvent& event);
+	void mWalletListPopupMenu_AccountInfo(wxCommandEvent& event);
+	void mWalletListPopupMenu_LoadAccountInfo(wxCommandEvent& event);
+	void mWalletListPopupMenu_SusPay_Execute(wxCommandEvent& event);
+	void mWalletListPopupMenu_SusPay_Cancel(wxCommandEvent& event);
 
     private:
     //Do not add custom control declarations between
     //GUI Control Declaration Start and GUI Control Declaration End.
     //wxDev-C++ will remove them. Add custom code after the block.
     ////GUI Control Declaration Start
-		wxMenu *mWalletListPopupMenu;
 		wxMenuBar *WxMenuBar1;
+		wxMenu *mWalletListPopupMenu;
 		wxButton *mRPCShowQRCode;
 		wxRadioButton *mOutputFormat_WebSocket;
 		wxRadioButton *mOutputFormat_Json;
@@ -140,18 +142,21 @@ class cXrp_WalletFrm : public wxFrame
     enum
     {
         ////GUI Enum Control ID Start
+			ID_MNU_DATABASE_1045 = 1045,
+			ID_MNU_CHANGEPASSWORD_1046 = 1046,
+			
 			ID_MNU_QRCODE_1039 = 1039,
 			ID_MNU_MENUITEM1_1021 = 1021,
 			ID_MNU_ACCOUNTINFO_1081 = 1081,
 			ID_MNU_ACCOUNTSETTINGS_1060 = 1060,
 			ID_MNU_SETSIGNERLIST_1055 = 1055,
+			ID_MNU_SUSPENDEDPAYMENT_1082 = 1082,
+			ID_MNU_EXECUTE_1083 = 1083,
+			ID_MNU_CANCEL_1084 = 1084,
 			ID_MNU_COPYADDRESS_1027 = 1027,
 			ID_MNU_COPYSECRET_1026 = 1026,
 			ID_MNU_SETXRP_1057 = 1057,
 			ID_MNU_SETCURRENTSEQUENCE_1058 = 1058,
-			
-			ID_MNU_DATABASE_1045 = 1045,
-			ID_MNU_CHANGEPASSWORD_1046 = 1046,
 			
 			ID_MRPCSHOWQRCODE = 1080,
 			ID_MOUTPUTFORMAT_WEBSOCKET = 1036,

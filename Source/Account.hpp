@@ -20,7 +20,7 @@ struct sTransaction {
         }
     }
 
-    const Json::Value ConvertToJson() const {
+    Json::Value ConvertToJson() const {
         Json::Value Result;
 
         Result["Timestamp"] = (Json::UInt) mTimestamp;
@@ -32,7 +32,7 @@ struct sTransaction {
         return Result;
     }
 
-    const bool ConvertFromJson( const Json::Value& pJson ) {
+    bool ConvertFromJson( const Json::Value& pJson ) {
         mTimestamp = pJson["Timestamp"].asUInt();
         mDestination = pJson["Destination"].asString();
         mSequence = pJson["Sequence"].asUInt();
@@ -135,7 +135,7 @@ class cAccount {
     ripple::STTx CreatePayment( const std::string& pDestination, const uint64_t pAmountDrops );
     ripple::STTx CreateSignerListSet( const std::list<ripple::SignerEntries::SignerEntry>& pSigners, const uint32_t& pNewQuorum );
     ripple::STTx CreateSuspended( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const std::string& pProofText );
-    ripple::STTx CreateSuspendedFinish( const uint32_t pSequence,  const std::string& pProofText );
-    ripple::STTx CreateSuspendedCancel( const uint32_t pSequence );
+    ripple::STTx CreateSuspendedFinish( const std::string& pOwner, const uint32_t pSequence,  const std::string& pProofText );
+    ripple::STTx CreateSuspendedCancel( const std::string& pOwner, const uint32_t pSequence );
 
 };

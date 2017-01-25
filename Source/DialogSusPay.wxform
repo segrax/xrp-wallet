@@ -1,4 +1,4 @@
-object frmNewForm_1: TfrmNewForm
+object frmNewForm_2: TfrmNewForm
   Left = 8
   Top = 8
   AutoScroll = False
@@ -177,6 +177,7 @@ object frmNewForm_1: TfrmNewForm
     Height = 33
     Caption = 'Complete'
     TabOrder = 4
+    EVT_BUTTON = 'mFinishButtonClick'
     Wx_BKColor = clBlack
     Wx_ButtonStyle = []
     Wx_Class = 'wxButton'

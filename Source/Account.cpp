@@ -652,11 +652,14 @@ ripple::STTx cAccount::CreateSuspended( const std::string& pDestination, const u
 /**
  * Create the finalisation of a suspended payment
  */
-ripple::STTx cAccount::CreateSuspendedFinish( const uint32_t pSequence, const std::string& pProofText ) {
+ripple::STTx cAccount::CreateSuspendedFinish( const std::string& pOwner, const uint32_t pSequence, const std::string& pProofText ) {
     using namespace ripple;
     std::string FinalProof = pProofText;
     if(FinalProof.size() < 32)
         FinalProof.append( 32 - FinalProof.size(), ' ' );
+
+    auto const OwnerAccount = parseBase58<AccountID>( pOwner );
+    assert( OwnerAccount );
 
     //From SusPayFinish::calculateBaseFee
     const uint64_t extraFee = (32 + static_cast<std::uint64_t> (FinalProof.size() / 16)) * 10;
@@ -673,7 +676,7 @@ ripple::STTx cAccount::CreateSuspendedFinish( const uint32_t pSequence, const st
         obj[sfFee] = STAmount{ calculateFeeDrops() + extraFee};
         obj[sfSequence] = getSequenceNext();
 
-        obj[sfOwner] = calcAccountID( mKeys.first );
+        obj[sfOwner] = *OwnerAccount;
         obj[sfOfferSequence] = pSequence;
         if (pProofText.size()) {
 
@@ -691,8 +694,9 @@ ripple::STTx cAccount::CreateSuspendedFinish( const uint32_t pSequence, const st
 /**
  * Create the cancellation of a suspended payment
  **/
-ripple::STTx cAccount::CreateSuspendedCancel( const uint32_t pSequence ) {
+ripple::STTx cAccount::CreateSuspendedCancel( const std::string& pOwner, const uint32_t pSequence ) {
     using namespace ripple;
+    auto const OwnerAccount = parseBase58<AccountID>( pOwner );
 
     addTransaction( "SusPayCancel", getAddress(), calculateFeeDrops() );
 
@@ -702,7 +706,7 @@ ripple::STTx cAccount::CreateSuspendedCancel( const uint32_t pSequence ) {
         obj[sfAccount] = calcAccountID( mKeys.first );
         obj[sfSequence] = getSequenceNext();
         obj[sfFee] = STAmount{ calculateFeeDrops() };
-        obj[sfOwner] = calcAccountID( mKeys.first );
+        obj[sfOwner] = *OwnerAccount;
 
         txAppendPubKey( obj );
         obj[sfOfferSequence] = pSequence;

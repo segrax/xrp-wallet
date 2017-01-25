@@ -33,16 +33,18 @@ BEGIN_EVENT_TABLE(cXrp_WalletFrm,wxFrame)
 	////Manual Code End
 	
 	EVT_CLOSE(cXrp_WalletFrm::OnClose)
+	EVT_MENU(ID_MNU_CHANGEPASSWORD_1046, cXrp_WalletFrm::mMenuDatabase_ChangePassword)
 	EVT_MENU(ID_MNU_QRCODE_1039 , cXrp_WalletFrm::mWalletListPopupMenu_ShowQR)
 	EVT_MENU(ID_MNU_MENUITEM1_1021 , cXrp_WalletFrm::mWalletListPopupMenu_ShowSecret)
 	EVT_MENU(ID_MNU_ACCOUNTINFO_1081 , cXrp_WalletFrm::mWalletListPopupMenu_AccountInfo)
 	EVT_MENU(ID_MNU_ACCOUNTSETTINGS_1060 , cXrp_WalletFrm::mWalletListPopupMenu_AccountSettings)
 	EVT_MENU(ID_MNU_SETSIGNERLIST_1055 , cXrp_WalletFrm::mWalletListPopupMenu_SetSignerList)
+	EVT_MENU(ID_MNU_EXECUTE_1083 , cXrp_WalletFrm::mWalletListPopupMenu_SusPay_Execute)
+	EVT_MENU(ID_MNU_CANCEL_1084 , cXrp_WalletFrm::mWalletListPopupMenu_SusPay_Cancel)
 	EVT_MENU(ID_MNU_COPYADDRESS_1027 , cXrp_WalletFrm::mWalletListPopupMenu_CopyAddress)
 	EVT_MENU(ID_MNU_COPYSECRET_1026 , cXrp_WalletFrm::mWalletListPopupMenu_CopySecret)
 	EVT_MENU(ID_MNU_SETXRP_1057 , cXrp_WalletFrm::mWalletListPopupMenu_SetXRP)
 	EVT_MENU(ID_MNU_SETCURRENTSEQUENCE_1058 , cXrp_WalletFrm::mWalletListPopupMenu_SetSequenceNumber)
-	EVT_MENU(ID_MNU_CHANGEPASSWORD_1046, cXrp_WalletFrm::mMenuDatabase_ChangePassword)
 	EVT_BUTTON(ID_MRPCSHOWQRCODE,cXrp_WalletFrm::mRPCShowQRCodeClick)
 	EVT_RADIOBUTTON(ID_MOUTPUTFORMAT_WEBSOCKET,cXrp_WalletFrm::mOutputFormat_WebSocketClick)
 	EVT_RADIOBUTTON(ID_MOUTPUTFORMAT_JSON,cXrp_WalletFrm::mOutputFormat_JsonClick)
@@ -192,12 +194,6 @@ void cXrp_WalletFrm::CreateGUIControls() {
 
 	mRPCShowQRCode = new wxButton(WxPanel1, ID_MRPCSHOWQRCODE, _("Show as QR Code"), wxPoint(472, 112), wxSize(113, 25), 0, wxDefaultValidator, _("mRPCShowQRCode"));
 
-	WxMenuBar1 = new wxMenuBar();
-	wxMenu *ID_MNU_DATABASE_1045_Mnu_Obj = new wxMenu();
-	ID_MNU_DATABASE_1045_Mnu_Obj->Append(ID_MNU_CHANGEPASSWORD_1046, _("Change Password"), _(""), wxITEM_NORMAL);
-	WxMenuBar1->Append(ID_MNU_DATABASE_1045_Mnu_Obj, _("&Database"));
-	SetMenuBar(WxMenuBar1);
-
 	mWalletListPopupMenu = new wxMenu(_(""));
 	mWalletListPopupMenu->Append(ID_MNU_QRCODE_1039, _("Show QR Code"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->Append(ID_MNU_MENUITEM1_1021, _("Show Secret"), _(""), wxITEM_NORMAL);
@@ -206,11 +202,21 @@ void cXrp_WalletFrm::CreateGUIControls() {
 	mWalletListPopupMenu->Append(ID_MNU_ACCOUNTSETTINGS_1060, _("Account Settings"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->Append(ID_MNU_SETSIGNERLIST_1055, _("Set Signer List"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->AppendSeparator();
+	wxMenu *ID_MNU_SUSPENDEDPAYMENT_1082_Obj = new wxMenu();
+	ID_MNU_SUSPENDEDPAYMENT_1082_Obj->Append(ID_MNU_EXECUTE_1083, _("Execute"), _(""), wxITEM_NORMAL);
+	ID_MNU_SUSPENDEDPAYMENT_1082_Obj->Append(ID_MNU_CANCEL_1084, _("Cancel"), _(""), wxITEM_NORMAL);
+	mWalletListPopupMenu->Append(ID_MNU_SUSPENDEDPAYMENT_1082, _("Suspended Payment"), ID_MNU_SUSPENDEDPAYMENT_1082_Obj);
 	mWalletListPopupMenu->Append(ID_MNU_COPYADDRESS_1027, _("Copy Address"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->Append(ID_MNU_COPYSECRET_1026, _("Copy Secret"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->AppendSeparator();
 	mWalletListPopupMenu->Append(ID_MNU_SETXRP_1057, _("Set XRP"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->Append(ID_MNU_SETCURRENTSEQUENCE_1058, _("Set Current Sequence"), _(""), wxITEM_NORMAL);
+
+	WxMenuBar1 = new wxMenuBar();
+	wxMenu *ID_MNU_DATABASE_1045_Mnu_Obj = new wxMenu();
+	ID_MNU_DATABASE_1045_Mnu_Obj->Append(ID_MNU_CHANGEPASSWORD_1046, _("Change Password"), _(""), wxITEM_NORMAL);
+	WxMenuBar1->Append(ID_MNU_DATABASE_1045_Mnu_Obj, _("&Database"));
+	SetMenuBar(WxMenuBar1);
 
 	SetTitle(_("XRP Wallet"));
 	SetIcon(wxNullIcon);
@@ -266,20 +272,6 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
 
     if (!Wallet)
         return;
-    /*
-    ripple::STTx Tx2 = Wallet->CreateSuspendedExecute( 8, "AAAAA" );
-    gTX_LastBlob = Tx2.getSerializer().getData();
-
-    // If the signing wallet is multi-sig, output the TX JSON instead of the RPC JSON
-    if (Wallet->getSignerQuorum()) {
-        WxRichTextCtrl1->Clear();
-        WxRichTextCtrl1->AppendText( Tx2.getJson( 0 ).toStyledString() );
-    }
-    else {
-        ReloadTransactionOutput();
-    }
-
-    return;*/
     
     const std::string Destination = mTxDestination->GetValue().ToStdString();
     const double AmountXRP = std::stod( mTxAmount->GetValue().ToStdString() );
@@ -320,8 +312,11 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
 
     // Doing a suspended payment?
     if (mTxSuspendPayment->IsChecked()) {
-        cDialog_SusPay DialogSus( this );
+        cDialog_SusPay DialogSus( this, Wallet );
         DialogSus.ShowModal();
+
+        if (DialogSus.mWallet)
+            return;
 
         std::string ProofText = DialogSus.GetProofText();
         uint64_t ExecuteTime = DialogSus.GetExecuteAfter();
@@ -839,8 +834,7 @@ void cXrp_WalletFrm::mAddressBookListItemActivated(wxListEvent& pEvent) {
 /*
  * mWalletListPopupMenu_AccountInfo
  */
-void cXrp_WalletFrm::mWalletListPopupMenu_AccountInfo(wxCommandEvent& event)
-{
+void cXrp_WalletFrm::mWalletListPopupMenu_AccountInfo(wxCommandEvent& event) {
     cAccount* Wallet = reinterpret_cast<cAccount*>(mWalletListPopupMenu->GetClientData());
 
     gCmd_Params.clear();
@@ -877,4 +871,71 @@ void cXrp_WalletFrm::mWalletListPopupMenu_LoadAccountInfo(wxCommandEvent& pEvent
             SaveAndReload();
     }
 
+}
+
+/*
+ * mWalletListPopupMenu_SusPay_Execute
+ */
+void cXrp_WalletFrm::mWalletListPopupMenu_SusPay_Execute(wxCommandEvent& event) {
+    cAccount* Wallet = reinterpret_cast<cAccount*>(mWalletListPopupMenu->GetClientData());
+    
+    std::string Owner = wxGetTextFromUser( "Owner Address", "Execute Suspended Payment", "" );
+    std::string SeqNo = wxGetTextFromUser( "Payment Sequence Number", "Execute Suspended Payment", "0" );
+    std::string Phrase = wxGetTextFromUser( "Phrase", "Execute Suspended Payment", "" );
+
+    uint64_t SequenceNumber = std::stoul( SeqNo );
+    if (!SequenceNumber)
+        return;
+
+    auto const OwnerAccount = ripple::parseBase58<ripple::AccountID>( Owner );
+    if (!OwnerAccount) {
+        wxMessageBox( "Invalid Owner Account" );
+        return;
+    }
+
+    ripple::STTx Tx = Wallet->CreateSuspendedFinish( Owner, SequenceNumber, Phrase );
+    gTX_LastBlob = Tx.getSerializer().getData();
+
+    // If the signing wallet is multi-sig, output the TX JSON instead of the RPC JSON
+    if (Wallet->getSignerQuorum()) {
+        WxRichTextCtrl1->Clear();
+        WxRichTextCtrl1->AppendText( Tx.getJson( 0 ).toStyledString() );
+    } else {
+        ReloadTransactionOutput();
+    }
+
+    return;
+}
+
+/*
+ * mWalletListPopupMenu_SusPay_Cancel
+ */
+void cXrp_WalletFrm::mWalletListPopupMenu_SusPay_Cancel(wxCommandEvent& event) {
+    cAccount* Wallet = reinterpret_cast<cAccount*>(mWalletListPopupMenu->GetClientData());
+    
+    std::string Owner = wxGetTextFromUser( "Owner Address", "Execute Suspended Payment", Wallet->getAddress() );
+    std::string SeqNo = wxGetTextFromUser( "Payment Sequence Number", "Execute Suspended Payment", "0" );
+
+    uint64_t SequenceNumber = std::stoul( SeqNo );
+    if (!SequenceNumber)
+        return;
+
+    auto const OwnerAccount = ripple::parseBase58<ripple::AccountID>( Owner );
+    if (!OwnerAccount) {
+        wxMessageBox( "Invalid Owner Account" );
+        return;
+    }
+
+    ripple::STTx Tx = Wallet->CreateSuspendedCancel( Owner, SequenceNumber );
+    gTX_LastBlob = Tx.getSerializer().getData();
+
+    // If the signing wallet is multi-sig, output the TX JSON instead of the RPC JSON
+    if (Wallet->getSignerQuorum()) {
+        WxRichTextCtrl1->Clear();
+        WxRichTextCtrl1->AppendText( Tx.getJson( 0 ).toStyledString() );
+    } else {
+        ReloadTransactionOutput();
+    }
+
+    return;
 }
