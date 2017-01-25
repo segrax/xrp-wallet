@@ -72,11 +72,11 @@ class cAccountManager : public cSingleton<cAccountManager> {
     cAccount*						AccountGetByAddress( const std::string& pAddress );
 
     cAccount*						AccountImport( const std::string& pSeed, const uint32_t pSequence );
-    const bool						AccountRemove( const cAccount& pWallet );
+    bool					    	AccountRemove( const cAccount& pWallet );
 
     bool							Load( const std::string& pFilename = "" );
     bool							Save( const std::string& pFilename = "" );
 
     void							SetDatabasePassword( const std::string& pDatabasePassword );
-    const std::string				EnDeCrypt( bool pEncrypt, const std::string& pData );
+    std::string				        EnDeCrypt( bool pEncrypt, const std::string& pData );
 };

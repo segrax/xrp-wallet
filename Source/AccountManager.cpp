@@ -46,7 +46,7 @@ cAccount* cAccountManager::AccountImport( const std::string& pSeed, const uint32
     return AccountAdd( pSeed, pSequence );
 }
 
-const bool cAccountManager::AccountRemove( const cAccount& pWallet ) {
+bool cAccountManager::AccountRemove( const cAccount& pWallet ) {
     mAccounts.remove( pWallet );
 
     return Save();
@@ -65,7 +65,7 @@ void cAccountManager::SetDatabasePassword( const std::string& pDatabasePassword 
                     5, (unsigned char*)mKeyDatabaseKey.c_str(), (unsigned char*)mKeyDatabaseIv.c_str() );
 }
 
-const std::string cAccountManager::EnDeCrypt( bool pEncrypt, const std::string& pData ) {
+std::string cAccountManager::EnDeCrypt( bool pEncrypt, const std::string& pData ) {
     int OutputLen, FinalLen;
     EVP_CIPHER_CTX ctx;
     std::string ResultBuffer;

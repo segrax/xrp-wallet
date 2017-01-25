@@ -25,7 +25,7 @@ This password is used to generate an AES256 Key, which is used to encrypt your a
 
 1. Browse to the 'Accounts' tab
 2. Press 'Create Account'
-3. You will be shown the secret wihch has been generated (this can be shown again later)
+3. You will be shown the secret which has been generated (this can be shown again later)
 4. Double click the new account
 5. You can now take the new account address via two methods
   a. Click 'Show QR Code'
