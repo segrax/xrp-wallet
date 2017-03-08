@@ -3,9 +3,8 @@
 #include <algorithm>
 
 #include <ripple/conditions/Condition.h>
-#include <ripple/conditions/PreimageSha256.h>
+#include <ripple/conditions/impl/PreimageSha256.h>
 #include <ripple/conditions/Fulfillment.h>
-#include <ripple/conditions/impl/base64.h>
 #include <ripple/protocol/digest.h>
 #include <ripple/protocol/HashPrefix.h>
 #include <ripple/protocol/JsonFields.h>

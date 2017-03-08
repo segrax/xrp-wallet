@@ -73,9 +73,9 @@ void cDialog_SusPay::CreateGUIControls()
 	wxDateTime mCancelAfterDate_Date(8,wxDateTime::Jan,2017,16,59,49,193);
 	mCancelAfterDate = new wxDatePickerCtrl(this, ID_MCANCELAFTERDATE, mCancelAfterDate_Date, wxPoint(32, 40), wxSize(81, 23) , wxDP_DROPDOWN, wxDefaultValidator, _("mCancelAfterDate"));
 
-	mCancelAfterEnabled = new wxCheckBox(this, ID_MCANCELAFTER, _("Can Cancelled After"), wxPoint(16, 16), wxSize(129, 25), 0, wxDefaultValidator, _("mCancelAfterEnabled"));
+	mCancelAfterEnabled = new wxCheckBox(this, ID_MCANCELAFTER, _("Can Cancel After"), wxPoint(16, 16), wxSize(129, 25), 0, wxDefaultValidator, _("mCancelAfterEnabled"));
 
-	SetTitle(_("Suspended Payment"));
+	SetTitle(_("Escrow Payment"));
 	SetIcon(wxNullIcon);
 	SetSize(8,8,248,264);
 	Center();

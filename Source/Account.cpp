@@ -1,6 +1,79 @@
 #include "stdafx.hpp"
 #include <openssl/md5.h>
 
+std::vector<std::uint8_t> der_encode( ripple::cryptoconditions::der::Preamble& p, const ripple::Slice& pMessage ) {
+
+	std::vector<std::uint8_t> v;
+	v.resize( 2 + pMessage.size() );
+
+	// ?Not Primitive, Context Specific?
+	v[0] = p.type;
+
+	// Message Type
+	v[0] |= (p.tag & 0x1F);
+
+	// Message length
+	if (p.length >= 0x7F) {
+
+		// TODO
+
+	}
+	else
+		v[1] = p.length;
+
+	std::memcpy( &v[2], pMessage.data(), pMessage.size() );
+
+	return v;
+}
+
+ripple::Buffer serializeFulFillment( size_t pType, ripple::Buffer const pMessage ) {
+	ripple::cryptoconditions::der::Preamble p;
+
+	p.type = 0x80;
+	p.tag = 0x00;
+	p.length = pMessage.size();
+
+	std::vector<std::uint8_t> Message = der_encode( p, pMessage.operator ripple::Slice() );
+
+	p.type = 0x20 | 0x80;
+	p.tag = pType;
+	p.length = Message.size();
+
+	Message = der_encode( p, ripple::makeSlice( Message ) );
+
+	return ripple::Buffer( Message.data(), Message.size() );
+}
+
+ripple::Buffer serializeCondition( ripple::cryptoconditions::Condition pCondition ) {
+	ripple::cryptoconditions::der::Preamble p;
+
+	p.type = 0x80;
+	p.tag = 0x00;
+	p.length = pCondition.fingerprint.size();
+	std::vector<std::uint8_t> MessageA = der_encode( p, pCondition.fingerprint.operator ripple::Slice() );
+
+	std::string A;
+	A.push_back( pCondition.cost );
+	p.type = 0x80;
+	p.tag = 0x01;
+	p.length = 0x01;
+	std::vector<std::uint8_t> MessageB = der_encode( p, ripple::Slice( A.c_str(), A.size() ) );
+
+	p.type = 0x20 | 0x80;
+	p.tag = static_cast<size_t>(pCondition.type);
+
+	std::string MessageC;
+	MessageC.resize( MessageA.size() + MessageB.size() );
+	std::memcpy( &MessageC[0], MessageA.data(), MessageA.size() );
+	std::memcpy( &MessageC[MessageA.size()], MessageB.data(), MessageB.size() );
+
+	p.length = MessageC.size();
+
+	std::vector<std::uint8_t> MessageF = der_encode( p, ripple::Slice( MessageC.c_str(), MessageC.size() ) );
+
+	return ripple::Buffer( MessageF.data(), MessageF.size() );
+
+}
 /**
  * Create a new wallet
  */
@@ -605,19 +678,15 @@ ripple::STTx cAccount::CreatePayment( const std::string& pDestination, const uin
 /**
  * Create a suspended payment
  */
-ripple::STTx cAccount::CreateSuspended( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const std::string& pProofText ) {
+ripple::STTx cAccount::CreateEscrow( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const std::string& pProofText ) {
     using namespace ripple;
-    std::string FinalProof = pProofText;
-    
-    if(FinalProof.size() < 32)
-        FinalProof.append( 32 - FinalProof.size(), ' ' );
 
     auto const destination = parseBase58<AccountID>( pDestination );
     assert( destination );
 
-    addTransaction( "SusPayCreate", pDestination, calculateFeeDrops() + pAmountDrops );
+    addTransaction( "EscrowCreate", pDestination, calculateFeeDrops() + pAmountDrops );
 
-    STTx Tx( ripple::ttSUSPAY_CREATE,
+    STTx Tx( ripple::ttESCROW_CREATE,
              [&]( auto& obj ) {
         obj[sfAccount] = calcAccountID( mKeys.first );
         obj[sfFee] = STAmount{ calculateFeeDrops() };
@@ -630,9 +699,9 @@ ripple::STTx cAccount::CreateSuspended( const std::string& pDestination, const u
         obj[sfDestination] = *destination;
         
         if (pProofText.size()) {
-            ripple::cryptoconditions::PreimageSha256 shaCondition( makeSlice( FinalProof ) );
+			ripple::cryptoconditions::PreimageSha256 shaCondition( makeSlice( pProofText ));
 
-            obj[sfCondition] = makeSlice( to_blob( shaCondition.condition() ) );
+            obj[sfCondition] = serializeCondition( shaCondition.condition() );
         }
 
         if (pCancelTime)
@@ -652,23 +721,18 @@ ripple::STTx cAccount::CreateSuspended( const std::string& pDestination, const u
 /**
  * Create the finalisation of a suspended payment
  */
-ripple::STTx cAccount::CreateSuspendedFinish( const std::string& pOwner, const uint32_t pSequence, const std::string& pProofText ) {
+ripple::STTx cAccount::CreateEscrowFinish( const std::string& pOwner, const uint32_t pSequence, const std::string& pProofText ) {
     using namespace ripple;
-    std::string FinalProof = pProofText;
-    if(FinalProof.size() < 32)
-        FinalProof.append( 32 - FinalProof.size(), ' ' );
 
     auto const OwnerAccount = parseBase58<AccountID>( pOwner );
     assert( OwnerAccount );
 
     //From SusPayFinish::calculateBaseFee
-    const uint64_t extraFee = (32 + static_cast<std::uint64_t> (FinalProof.size() / 16)) * 10;
+    const uint64_t extraFee = (32 + static_cast<std::uint64_t> (pProofText.size() / 16)) * 10;
 
-    ripple::cryptoconditions::PreimageSha256 shaCondition( makeSlice( FinalProof ) );
+    addTransaction( "EscrowFinish", getAddress(), calculateFeeDrops() + extraFee );
 
-    addTransaction( "SusPayFinish", getAddress(), calculateFeeDrops() + extraFee );
-
-    STTx Tx( ripple::ttSUSPAY_FINISH,
+    STTx Tx( ripple::ttESCROW_FINISH,
                 [&]( auto& obj ) {
 
         obj[sfAccount] = calcAccountID( mKeys.first );
@@ -678,10 +742,14 @@ ripple::STTx cAccount::CreateSuspendedFinish( const std::string& pOwner, const u
 
         obj[sfOwner] = *OwnerAccount;
         obj[sfOfferSequence] = pSequence;
-        if (pProofText.size()) {
+        if (pProofText.size()) 
+		{
+			ripple::Buffer ProofBuffer( pProofText.data(), pProofText.size() );
 
-            obj[sfCondition] = makeSlice( to_blob( shaCondition.condition() ) );
-            obj[sfFulfillment] = makeSlice( to_blob( shaCondition ) );
+			ripple::cryptoconditions::PreimageSha256 shaCondition( makeSlice( pProofText ) );
+
+			obj[sfCondition] = serializeCondition( shaCondition.condition() );
+			obj[sfFulfillment] = serializeFulFillment( static_cast<size_t>(shaCondition.type()), ProofBuffer );
         }
     } );
 
@@ -694,13 +762,13 @@ ripple::STTx cAccount::CreateSuspendedFinish( const std::string& pOwner, const u
 /**
  * Create the cancellation of a suspended payment
  **/
-ripple::STTx cAccount::CreateSuspendedCancel( const std::string& pOwner, const uint32_t pSequence ) {
+ripple::STTx cAccount::CreateEscrowCancel( const std::string& pOwner, const uint32_t pSequence ) {
     using namespace ripple;
     auto const OwnerAccount = parseBase58<AccountID>( pOwner );
 
-    addTransaction( "SusPayCancel", getAddress(), calculateFeeDrops() );
+    addTransaction( "EscrowCancel", getAddress(), calculateFeeDrops() );
 
-    STTx Tx( ripple::ttSUSPAY_CANCEL,
+    STTx Tx( ripple::ttESCROW_CANCEL,
              [&]( auto& obj ) {
 
         obj[sfAccount] = calcAccountID( mKeys.first );
