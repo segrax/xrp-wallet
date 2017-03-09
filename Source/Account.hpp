@@ -123,7 +123,7 @@ class cAccount {
     std::string getMessageKey() const;
     void setMessageKey( const std::string& pMessageKey );
     
-    uint64_t getSequenceNext() { return mSequence++; }
+	uint64_t getSequenceNext() { if (!mSequence) ++mSequence; return mSequence++; }
     uint64_t getSequence() const;
     void setSequence( const uint64_t& pSequence );
     

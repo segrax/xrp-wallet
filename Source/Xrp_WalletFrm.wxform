@@ -825,7 +825,6 @@ object frmNewForm: TfrmNewForm
         Height = 153
         BevelInner = bvNone
         BevelOuter = bvNone
-        ScrollBars = ssVertical
         TabOrder = 0
         Wx_BGColor = clBlack
         Wx_Class = 'wxRichTextCtrl'
@@ -858,7 +857,7 @@ object frmNewForm: TfrmNewForm
         Top = 12
         Width = 281
         Height = 23
-        ItemHeight = 0
+        ItemHeight = 15
         TabOrder = 1
         EVT_COMBOBOX = 'mTxSignWithWalletSelected'
         Wx_BGColor = clBlack
@@ -1195,7 +1194,6 @@ object frmNewForm: TfrmNewForm
       Height = 129
       BevelInner = bvNone
       BevelOuter = bvNone
-      ScrollBars = ssVertical
       TabOrder = 0
       Wx_BGColor = clBlack
       Wx_Class = 'wxRichTextCtrl'

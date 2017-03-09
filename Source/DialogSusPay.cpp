@@ -81,6 +81,14 @@ void cDialog_SusPay::CreateGUIControls()
 	Center();
 	
     ////GUI Items Creation End
+    
+	wxDateTime TimeNow;
+
+	mCancelAfterTime->SetValue( TimeNow.Now() );
+	mCancelAfterDate->SetValue( TimeNow.Now() );
+
+	mExecuteAfterTime->SetValue( TimeNow.Now() );
+	mExecuteAfterDate->SetValue( TimeNow.Now() );
 }
 
 void cDialog_SusPay::OnClose( wxCloseEvent& /*event*/ )
@@ -89,8 +97,8 @@ void cDialog_SusPay::OnClose( wxCloseEvent& /*event*/ )
 }
 
 const uint64_t cDialog_SusPay::GetCancelledAfter() const {
-    if (!mCancelAfterEnabled->IsChecked())
-        return 0;
+	if (!mCancelAfterEnabled->IsChecked())
+		return 0;
 
     // Date
     wxDateTime Time = mCancelAfterTime->GetValue();
