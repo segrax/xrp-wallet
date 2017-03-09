@@ -252,8 +252,27 @@ void cXrp_WalletFrm::OnClose( wxCloseEvent& pEvent ) {
  * mWalletBtnCreateClick
  */
 void cXrp_WalletFrm::mWalletBtnCreateClick( wxCommandEvent& event ) {
-    cAccount* Wallet = g_WalletManager.AccountGenerate();
+	cAccount* Wallet = 0;
+	
+#if 0
+	cAccount* WalletSeek = 0;
+		std::string StartsWith = wxGetTextFromUser( "Starts With", "Generate Account", "r" );
+		StartsWith.resize( 3 );
+		while (!WalletSeek) {
+			WalletSeek = new cAccount( "", 1 );
 
+			if (WalletSeek->getAddress().find( StartsWith ) == 0)
+				break;
+
+			delete WalletSeek;
+			WalletSeek = 0;
+		}
+
+		Wallet = g_WalletManager.AccountImport( WalletSeek->getSecret(), 1 );
+		delete WalletSeek;
+#else
+	 Wallet = g_WalletManager.AccountGenerate();
+#endif
     if (!Wallet)
         return;
 
