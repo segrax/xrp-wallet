@@ -121,7 +121,7 @@ void cXrp_WalletFrm::CreateGUIControls() {
 
 	WxStaticText5 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT5, _("Sequence Number"), wxPoint(26, 132), wxDefaultSize, 0, _("WxStaticText5"));
 
-	WxStaticText6 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT6, _("From Wallet"), wxPoint(26, 16), wxDefaultSize, 0, _("WxStaticText6"));
+	WxStaticText6 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT6, _("From Account"), wxPoint(26, 16), wxDefaultSize, 0, _("WxStaticText6"));
 
 	mTxDestination = new wxTextCtrl(WxNoteBookPage3, ID_MTXDESTINATION, _(""), wxPoint(138, 53), wxSize(283, 23), 0, wxDefaultValidator, _("mTxDestination"));
 
