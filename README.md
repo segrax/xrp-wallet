@@ -1,6 +1,6 @@
-#Xrp-Wallet
+# Xrp-Wallet
 
-####About
+#### About
 
 ![Image](https://cloud.githubusercontent.com/assets/1327406/23770057/a87ecda8-0565-11e7-9886-094020fae4e4.png "Image")
 
@@ -13,16 +13,16 @@ Cold Wallet for XRP.
 * Set Signer List
 
 
-####How to Use
+#### How to Use
 
 
-#####First Launch
+##### First Launch
 
 On first launch, you will be asked for a password. 
 This password is used to generate an AES256 Key, which is used to encrypt your account database when stored to disk.
 
 
-#####Creating an account
+##### Creating an account
 
 1. Browse to the 'Accounts' tab
 2. Press 'Create Account'
@@ -34,7 +34,7 @@ This password is used to generate an AES256 Key, which is used to encrypt your a
 6. Send the new account the minimum XRP required to activate it (20 at the time of writting)
 
 
-#####Sending a payment
+##### Sending a payment
 
 1. Browse to the 'Send' tab
 2. Select the account which you wish to send from
@@ -45,7 +45,7 @@ This password is used to generate an AES256 Key, which is used to encrypt your a
 7. You can now take the sign transaction blob and submit it to a Ripple validator
 
 
-#####Setting up a multisigned wallet
+##### Setting up a multisigned wallet
 
 1. Browse to the 'Accounts' tab
 2. Double click the account you wish to setup Multisign on
@@ -59,14 +59,14 @@ This password is used to generate an AES256 Key, which is used to encrypt your a
 10. You can now take the sign transaction blob and submit it to a Ripple validator
 
 
-####Compiling
+#### Compiling
 
-#####Requires
+##### Requires
 
 * WxWidgets 3.1
 * OpenSSL
 * rippled
 
-#####Install some packages
+##### Install some packages
 $ git submodule init
 $ git submodule update
