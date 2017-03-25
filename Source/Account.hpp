@@ -132,9 +132,9 @@ class cAccount {
 
     bool SignTx( ripple::STTx& pTx );
     ripple::STTx CreateAccountSet( );
-    ripple::STTx CreatePayment( const std::string& pDestination, const uint64_t pAmountDrops );
+    ripple::STTx CreatePayment( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pDestinationTag );
     ripple::STTx CreateSignerListSet( const std::list<ripple::SignerEntries::SignerEntry>& pSigners, const uint32_t& pNewQuorum );
-    ripple::STTx CreateEscrow( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const std::string& pProofText );
+    ripple::STTx CreateEscrow( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const uint64_t pDestinationTag, const std::string& pProofText );
     ripple::STTx CreateEscrowFinish( const std::string& pOwner, const uint32_t pSequence,  const std::string& pProofText );
     ripple::STTx CreateEscrowCancel( const std::string& pOwner, const uint32_t pSequence );
 

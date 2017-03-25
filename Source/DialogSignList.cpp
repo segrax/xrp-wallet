@@ -94,7 +94,7 @@ void cDialogSignList::mBtnSignClick( wxCommandEvent& event ) {
     }
 
     if (TotalWeight < Quorum) {
-        wxMessageBox( "Total weight of addresses is less than required weight" );
+        wxMessageBox( _( "Total weight of addresses is less than required weight") );
         return;
     }
 
@@ -114,18 +114,18 @@ void cDialogSignList::mBtnCancelClick( wxCommandEvent& event ) {
  * mBtnAddClick
  */
 void cDialogSignList::mBtnAddClick( wxCommandEvent& event ) {
-    std::string Address = wxGetTextFromUser( "Address", "Enter a signing address" );
-    std::string Quorum = wxGetTextFromUser( "Weight", "Enter a signing weight" );
+    std::string Address = std::string(wxGetTextFromUser( _( "Address"), _( "Enter a signing address" )));
+    std::string Quorum = std::string(wxGetTextFromUser( _( "Weight"), _( "Enter a signing weight") ));
 
     auto Account = ripple::parseBase58<ripple::AccountID>( Address );
 
     if (!Account) {
-        wxMessageBox( "Invalid Address" );
+        wxMessageBox( _( "Invalid Address") );
         return;
     }
 
     if (Address == mWallet->getAddress()) {
-        wxMessageBox( "Cannot add yourself to the sign list" );
+        wxMessageBox( _( "Cannot add yourself to the sign list") );
         return;
     }
     mSigners.emplace_back( *Account, std::stoi( Quorum ) );

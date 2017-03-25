@@ -85,14 +85,15 @@ class cXrp_WalletFrm : public wxFrame
 	void mWalletListPopupMenu_LoadAccountInfo(wxCommandEvent& event);
 	void mWalletListPopupMenu_SusPay_Execute(wxCommandEvent& event);
 	void mWalletListPopupMenu_SusPay_Cancel(wxCommandEvent& event);
+		void mTxSeqNumUpdated(wxCommandEvent& event);
 
     private:
     //Do not add custom control declarations between
     //GUI Control Declaration Start and GUI Control Declaration End.
     //wxDev-C++ will remove them. Add custom code after the block.
     ////GUI Control Declaration Start
-		wxMenu *mWalletListPopupMenu;
 		wxMenuBar *WxMenuBar1;
+		wxMenu *mWalletListPopupMenu;
 		wxButton *mRPCShowQRCode;
 		wxRadioButton *mOutputFormat_WebSocket;
 		wxRadioButton *mOutputFormat_Json;
@@ -109,14 +110,16 @@ class cXrp_WalletFrm : public wxFrame
 		wxComboBox *mTxSignWithWallet;
 		wxRichTextCtrl *mSignForTransaction;
 		wxPanel *WxNoteBookPage4;
+		wxStaticText *WxStaticText9;
 		wxStaticText *mLabelMultiSigsWarning;
-		wxComboBox *mTxSourceWallet;
 		wxButton *mTxBtnSign;
 		wxCheckBox *mTxSuspendPayment;
 		wxTextCtrl *mTxSeqNum;
 		wxComboBox *mTxAmountType;
 		wxTextCtrl *mTxAmount;
+		wxTextCtrl *mTxDestinationTag;
 		wxTextCtrl *mTxDestination;
+		wxComboBox *mTxSourceWallet;
 		wxStaticText *WxStaticText6;
 		wxStaticText *WxStaticText5;
 		wxStaticText *WxStaticText2;
@@ -142,6 +145,9 @@ class cXrp_WalletFrm : public wxFrame
     enum
     {
         ////GUI Enum Control ID Start
+			ID_MNU_DATABASE_1045 = 1045,
+			ID_MNU_CHANGEPASSWORD_1046 = 1046,
+			
 			ID_MNU_QRCODE_1039 = 1039,
 			ID_MNU_MENUITEM1_1021 = 1021,
 			ID_MNU_ACCOUNTINFO_1081 = 1081,
@@ -154,9 +160,6 @@ class cXrp_WalletFrm : public wxFrame
 			ID_MNU_COPYSECRET_1026 = 1026,
 			ID_MNU_SETXRP_1057 = 1057,
 			ID_MNU_SETCURRENTSEQUENCE_1058 = 1058,
-			
-			ID_MNU_DATABASE_1045 = 1045,
-			ID_MNU_CHANGEPASSWORD_1046 = 1046,
 			
 			ID_MRPCSHOWQRCODE = 1080,
 			ID_MOUTPUTFORMAT_WEBSOCKET = 1036,
@@ -174,14 +177,16 @@ class cXrp_WalletFrm : public wxFrame
 			ID_MTXSIGNWITHWALLET = 1066,
 			ID_MSIGNTRANSACTIONINPUT = 1063,
 			ID_WXNOTEBOOKPAGE4 = 1062,
+			ID_WXSTATICTEXT9 = 1089,
 			ID_MLABELMULTISIGS = 1057,
-			ID_MTXSOURCEWALLET = 1022,
 			ID_MTXBTNSIGN = 1013,
 			ID_MTXSUSPENDPAYMENT = 1048,
 			ID_MTXSEQNUM = 1019,
 			ID_MTXAMOUNTTYPE = 1012,
 			ID_MTXAMOUNT = 1011,
+			ID_MTXDESTINATIONTAG = 1090,
 			ID_MTXDESTINATION = 1009,
+			ID_MTXSOURCEWALLET = 1022,
 			ID_WXSTATICTEXT6 = 1021,
 			ID_WXSTATICTEXT5 = 1020,
 			ID_WXSTATICTEXT2 = 1010,

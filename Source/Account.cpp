@@ -646,7 +646,7 @@ ripple::STTx cAccount::CreateSignerListSet( const std::list<ripple::SignerEntrie
 /**
  * Create a payment
  */
-ripple::STTx cAccount::CreatePayment( const std::string& pDestination, const uint64_t pAmountDrops ) {
+ripple::STTx cAccount::CreatePayment( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pDestinationTag ) {
     using namespace ripple;
 
     auto const destination = parseBase58<AccountID>( pDestination );
@@ -666,6 +666,9 @@ ripple::STTx cAccount::CreatePayment( const std::string& pDestination, const uin
         obj[sfAmount] = STAmount{ pAmountDrops };
         obj[sfDestination] = *destination;
 
+		if (pDestinationTag)
+			obj[sfDestinationTag] = pDestinationTag;
+
         txAppendPubKey( obj );
     } );
 
@@ -678,7 +681,7 @@ ripple::STTx cAccount::CreatePayment( const std::string& pDestination, const uin
 /**
  * Create a suspended payment
  */
-ripple::STTx cAccount::CreateEscrow( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const std::string& pProofText ) {
+ripple::STTx cAccount::CreateEscrow( const std::string& pDestination, const uint64_t pAmountDrops, const uint64_t pCancelTime, const uint64_t pExecuteTime, const uint64_t pDestinationTag, const std::string& pProofText ) {
     using namespace ripple;
 
     auto const destination = parseBase58<AccountID>( pDestination );
@@ -693,11 +696,15 @@ ripple::STTx cAccount::CreateEscrow( const std::string& pDestination, const uint
 
         obj[sfFlags] = tfFullyCanonicalSig;
         obj[sfSequence] = getSequenceNext();
-        txAppendPubKey( obj );
 
         obj[sfAmount] = STAmount{ pAmountDrops };
         obj[sfDestination] = *destination;
-        
+
+		if (pDestinationTag)
+			obj[sfDestinationTag] = pDestinationTag;
+
+		txAppendPubKey( obj );
+
         if (pProofText.size()) {
 			ripple::cryptoconditions::PreimageSha256 shaCondition( makeSlice( pProofText ));
 

@@ -33,6 +33,7 @@ BEGIN_EVENT_TABLE(cXrp_WalletFrm,wxFrame)
 	////Manual Code End
 	
 	EVT_CLOSE(cXrp_WalletFrm::OnClose)
+	EVT_MENU(ID_MNU_CHANGEPASSWORD_1046, cXrp_WalletFrm::mMenuDatabase_ChangePassword)
 	EVT_MENU(ID_MNU_QRCODE_1039 , cXrp_WalletFrm::mWalletListPopupMenu_ShowQR)
 	EVT_MENU(ID_MNU_MENUITEM1_1021 , cXrp_WalletFrm::mWalletListPopupMenu_ShowSecret)
 	EVT_MENU(ID_MNU_ACCOUNTINFO_1081 , cXrp_WalletFrm::mWalletListPopupMenu_AccountInfo)
@@ -44,7 +45,6 @@ BEGIN_EVENT_TABLE(cXrp_WalletFrm,wxFrame)
 	EVT_MENU(ID_MNU_COPYSECRET_1026 , cXrp_WalletFrm::mWalletListPopupMenu_CopySecret)
 	EVT_MENU(ID_MNU_SETXRP_1057 , cXrp_WalletFrm::mWalletListPopupMenu_SetXRP)
 	EVT_MENU(ID_MNU_SETCURRENTSEQUENCE_1058 , cXrp_WalletFrm::mWalletListPopupMenu_SetSequenceNumber)
-	EVT_MENU(ID_MNU_CHANGEPASSWORD_1046, cXrp_WalletFrm::mMenuDatabase_ChangePassword)
 	EVT_BUTTON(ID_MRPCSHOWQRCODE,cXrp_WalletFrm::mRPCShowQRCodeClick)
 	EVT_RADIOBUTTON(ID_MOUTPUTFORMAT_WEBSOCKET,cXrp_WalletFrm::mOutputFormat_WebSocketClick)
 	EVT_RADIOBUTTON(ID_MOUTPUTFORMAT_JSON,cXrp_WalletFrm::mOutputFormat_JsonClick)
@@ -54,8 +54,10 @@ BEGIN_EVENT_TABLE(cXrp_WalletFrm,wxFrame)
 	EVT_LIST_ITEM_ACTIVATED(ID_MADDRESSBOOKLIST,cXrp_WalletFrm::mAddressBookListItemActivated)
 	EVT_BUTTON(ID_MBUTTONSIGNFOR,cXrp_WalletFrm::mButtonSignForClick)
 	EVT_COMBOBOX(ID_MTXSIGNWITHWALLET,cXrp_WalletFrm::mTxSignWithWalletSelected)
-	EVT_COMBOBOX(ID_MTXSOURCEWALLET,cXrp_WalletFrm::mTxSourceWalletSelected)
 	EVT_BUTTON(ID_MTXBTNSIGN,cXrp_WalletFrm::mTxBtnSignClick)
+	
+	EVT_TEXT(ID_MTXSEQNUM,cXrp_WalletFrm::mTxSeqNumUpdated)
+	EVT_COMBOBOX(ID_MTXSOURCEWALLET,cXrp_WalletFrm::mTxSourceWalletSelected)
 	EVT_BUTTON(ID_MBUTTONLOADACCOUNTINFO,cXrp_WalletFrm::mWalletListPopupMenu_LoadAccountInfo)
 	
 	EVT_TEXT(ID_MTXFEEDROPS,cXrp_WalletFrm::mTxFeeDropsUpdated)
@@ -115,15 +117,20 @@ void cXrp_WalletFrm::CreateGUIControls() {
 	WxNoteBookPage3 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE3, wxPoint(4, 26), wxSize(612, 246));
 	WxNotebook1->AddPage(WxNoteBookPage3, _("Send"));
 
-	WxStaticText1 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT1, _("Pay To"), wxPoint(26, 54), wxDefaultSize, 0, _("WxStaticText1"));
+	WxStaticText1 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT1, _("Pay To"), wxPoint(26, 53), wxDefaultSize, 0, _("WxStaticText1"));
 
-	WxStaticText2 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT2, _("Amount"), wxPoint(26, 100), wxDefaultSize, 0, _("WxStaticText2"));
+	WxStaticText2 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT2, _("Amount"), wxPoint(26, 92), wxDefaultSize, 0, _("WxStaticText2"));
 
 	WxStaticText5 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT5, _("Sequence Number"), wxPoint(26, 132), wxDefaultSize, 0, _("WxStaticText5"));
 
 	WxStaticText6 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT6, _("From Account"), wxPoint(26, 16), wxDefaultSize, 0, _("WxStaticText6"));
 
+	wxArrayString arrayStringFor_mTxSourceWallet;
+	mTxSourceWallet = new wxComboBox(WxNoteBookPage3, ID_MTXSOURCEWALLET, _(""), wxPoint(138, 12), wxSize(281, 23), arrayStringFor_mTxSourceWallet, 0, wxDefaultValidator, _("mTxSourceWallet"));
+
 	mTxDestination = new wxTextCtrl(WxNoteBookPage3, ID_MTXDESTINATION, _(""), wxPoint(138, 53), wxSize(283, 23), 0, wxDefaultValidator, _("mTxDestination"));
+
+	mTxDestinationTag = new wxTextCtrl(WxNoteBookPage3, ID_MTXDESTINATIONTAG, _(""), wxPoint(466, 53), wxSize(113, 23), wxDOUBLE_BORDER, wxDefaultValidator, _("mTxDestinationTag"));
 
 	mTxAmount = new wxTextCtrl(WxNoteBookPage3, ID_MTXAMOUNT, _("0"), wxPoint(138, 92), wxSize(113, 23), 0, wxDefaultValidator, _("mTxAmount"));
 
@@ -133,17 +140,16 @@ void cXrp_WalletFrm::CreateGUIControls() {
 
 	mTxSeqNum = new wxTextCtrl(WxNoteBookPage3, ID_MTXSEQNUM, _(""), wxPoint(138, 132), wxSize(113, 23), 0, wxDefaultValidator, _("mTxSeqNum"));
 
-	mTxSuspendPayment = new wxCheckBox(WxNoteBookPage3, ID_MTXSUSPENDPAYMENT, _("Escrow Payment  "), wxPoint(10, 174), wxSize(145, 17), wxALIGN_RIGHT, wxDefaultValidator, _("mTxSuspendPayment"));
+	mTxSuspendPayment = new wxCheckBox(WxNoteBookPage3, ID_MTXSUSPENDPAYMENT, _("Escrow Payment  "), wxPoint(10, 182), wxSize(145, 17), wxALIGN_RIGHT, wxDefaultValidator, _("mTxSuspendPayment"));
 
-	mTxBtnSign = new wxButton(WxNoteBookPage3, ID_MTXBTNSIGN, _("Sign"), wxPoint(482, 204), wxSize(105, 25), 0, wxDefaultValidator, _("mTxBtnSign"));
+	mTxBtnSign = new wxButton(WxNoteBookPage3, ID_MTXBTNSIGN, _("Sign"), wxPoint(482, 188), wxSize(105, 25), 0, wxDefaultValidator, _("mTxBtnSign"));
 
-	wxArrayString arrayStringFor_mTxSourceWallet;
-	mTxSourceWallet = new wxComboBox(WxNoteBookPage3, ID_MTXSOURCEWALLET, _(""), wxPoint(138, 12), wxSize(281, 23), arrayStringFor_mTxSourceWallet, 0, wxDefaultValidator, _("mTxSourceWallet"));
-
-	mLabelMultiSigsWarning = new wxStaticText(WxNoteBookPage3, ID_MLABELMULTISIGS, _("Requires Multiple Signatures"), wxPoint(346, 124), wxDefaultSize, 0, _("mLabelMultiSigsWarning"));
+	mLabelMultiSigsWarning = new wxStaticText(WxNoteBookPage3, ID_MLABELMULTISIGS, _("Requires Multiple Signatures"), wxPoint(346, 132), wxDefaultSize, 0, _("mLabelMultiSigsWarning"));
 	mLabelMultiSigsWarning->Show(false);
 	mLabelMultiSigsWarning->SetForegroundColour(wxColour(255,0,0));
 	mLabelMultiSigsWarning->SetFont(wxFont(14, wxSWISS, wxNORMAL, wxNORMAL, false, _("Segoe UI Symbol")));
+
+	WxStaticText9 = new wxStaticText(WxNoteBookPage3, ID_WXSTATICTEXT9, _("Destination Tag"), wxPoint(466, 24), wxDefaultSize, 0, _("WxStaticText9"));
 
 	WxNoteBookPage4 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE4, wxPoint(4, 26), wxSize(612, 246));
 	WxNotebook1->AddPage(WxNoteBookPage4, _("Sign Transaction"));
@@ -194,12 +200,6 @@ void cXrp_WalletFrm::CreateGUIControls() {
 
 	mRPCShowQRCode = new wxButton(WxPanel1, ID_MRPCSHOWQRCODE, _("Show as QR Code"), wxPoint(472, 112), wxSize(113, 25), 0, wxDefaultValidator, _("mRPCShowQRCode"));
 
-	WxMenuBar1 = new wxMenuBar();
-	wxMenu *ID_MNU_DATABASE_1045_Mnu_Obj = new wxMenu();
-	ID_MNU_DATABASE_1045_Mnu_Obj->Append(ID_MNU_CHANGEPASSWORD_1046, _("Change Password"), _(""), wxITEM_NORMAL);
-	WxMenuBar1->Append(ID_MNU_DATABASE_1045_Mnu_Obj, _("&Database"));
-	SetMenuBar(WxMenuBar1);
-
 	mWalletListPopupMenu = new wxMenu(_(""));
 	mWalletListPopupMenu->Append(ID_MNU_QRCODE_1039, _("Show QR Code"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->Append(ID_MNU_MENUITEM1_1021, _("Show Secret"), _(""), wxITEM_NORMAL);
@@ -217,6 +217,12 @@ void cXrp_WalletFrm::CreateGUIControls() {
 	mWalletListPopupMenu->AppendSeparator();
 	mWalletListPopupMenu->Append(ID_MNU_SETXRP_1057, _("Set XRP"), _(""), wxITEM_NORMAL);
 	mWalletListPopupMenu->Append(ID_MNU_SETCURRENTSEQUENCE_1058, _("Set Current Sequence"), _(""), wxITEM_NORMAL);
+
+	WxMenuBar1 = new wxMenuBar();
+	wxMenu *ID_MNU_DATABASE_1045_Mnu_Obj = new wxMenu();
+	ID_MNU_DATABASE_1045_Mnu_Obj->Append(ID_MNU_CHANGEPASSWORD_1046, _("Change Password"), _(""), wxITEM_NORMAL);
+	WxMenuBar1->Append(ID_MNU_DATABASE_1045_Mnu_Obj, _("&Database"));
+	SetMenuBar(WxMenuBar1);
 
 	SetTitle(_("XRP Wallet"));
 	SetIcon(wxNullIcon);
@@ -292,10 +298,24 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
     if (!Wallet)
         return;
     
+	auto DestinationTag = mTxDestinationTag->GetValue().ToStdString();
+
     const std::string Destination = mTxDestination->GetValue().ToStdString();
     const double AmountXRP = std::stod( mTxAmount->GetValue().ToStdString() );
     const uint64_t Sequence = std::stoi( mTxSeqNum->GetValue().ToStdString() );
-    uint64_t AmountDrops = 0;
+	uint64_t DestTag = 0;
+	
+	if (DestinationTag.size()) {
+		try {
+			DestTag = std::stoi( DestinationTag );
+		} catch (std::exception &p) {
+			wxMessageBox( "Invalid Destination Tag", "Sign Transaction Failed" );
+			DestTag = 0;
+			return;
+		}
+	}
+
+	uint64_t AmountDrops = 0;
 
     if (!Destination.size()) {
         wxMessageBox( "Please enter a destination", "Sign Transaction Failed" );
@@ -343,7 +363,7 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
 
         // Ensure we have atleast one executable state
         if (CancelTime || ExecuteTime || ProofText.size()) {
-            Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreateEscrow( Destination, AmountDrops, CancelTime, ExecuteTime, ProofText ) ) );
+            Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreateEscrow( Destination, AmountDrops, CancelTime, DestTag, ExecuteTime, ProofText ) ) );
         } else {
             wxMessageBox( "No suspended payment options provided" );
             return;
@@ -351,7 +371,7 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
 
     } else {
         // Standard Payment
-        Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreatePayment( Destination, AmountDrops ) ) );
+        Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreatePayment( Destination, AmountDrops, DestTag ) ) );
     }
 
     gTX_LastBlob = Tx->getSerializer().getData();
@@ -961,4 +981,12 @@ void cXrp_WalletFrm::mWalletListPopupMenu_SusPay_Cancel(wxCommandEvent& event) {
     }
 
     return;
+}
+
+/*
+ * mTxSeqNumUpdated
+ */
+void cXrp_WalletFrm::mTxSeqNumUpdated(wxCommandEvent& event)
+{
+	// insert your code here
 }

@@ -380,9 +380,10 @@ object frmNewForm: TfrmNewForm
       Wx_Hidden = False
       Wx_IDName = 'ID_WXNOTEBOOKPAGE3'
       Wx_IDValue = 1007
+      InvisibleBGColorString = 'DEF:'
       object WxStaticText1: TWxStaticText
         Left = 26
-        Top = 54
+        Top = 53
         Width = 40
         Height = 19
         Caption = 'Pay To'
@@ -415,7 +416,7 @@ object frmNewForm: TfrmNewForm
       end
       object WxStaticText2: TWxStaticText
         Left = 26
-        Top = 100
+        Top = 92
         Width = 48
         Height = 19
         Caption = 'Amount'
@@ -512,6 +513,41 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_X_Pos = 0
         Wx_Floating_Y_Pos = 0
       end
+      object mTxSourceWallet: TWxComboBox
+        Left = 138
+        Top = 12
+        Width = 281
+        Height = 23
+        ItemHeight = 15
+        TabOrder = 9
+        EVT_COMBOBOX = 'mTxSourceWalletSelected'
+        Wx_BGColor = clBlack
+        Wx_Class = 'wxComboBox'
+        Wx_ComboboxStyle = []
+        Wx_EditStyle = []
+        Wx_ControlOrientation = wxControlVertical
+        Wx_FGColor = clBlack
+        Wx_GeneralStyle = []
+        Wx_Hidden = False
+        Wx_IDName = 'ID_MTXSOURCEWALLET'
+        Wx_IDValue = 1022
+        Wx_PaneCaption = 'WxComboBox1'
+        Wx_PaneName = 'WxComboBox1_Pane'
+        Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+        Wx_Aui_Dockable_Direction = []
+        Wx_Aui_Pane_Style = []
+        Wx_Aui_Pane_Buttons = []
+        Wx_BestSize_Height = 0
+        Wx_BestSize_Width = 0
+        Wx_MinSize_Height = 0
+        Wx_MinSize_Width = 0
+        Wx_MaxSize_Height = 0
+        Wx_MaxSize_Width = 0
+        Wx_Floating_Height = 0
+        Wx_Floating_Width = 0
+        Wx_Floating_X_Pos = 0
+        Wx_Floating_Y_Pos = 0
+      end
       object mTxDestination: TWxEdit
         Left = 138
         Top = 53
@@ -530,6 +566,42 @@ object frmNewForm: TfrmNewForm
         Wx_Hidden = False
         Wx_IDName = 'ID_MTXDESTINATION'
         Wx_IDValue = 1009
+        Wx_MaxLength = 0
+        Wx_PaneCaption = 'WxEdit1'
+        Wx_PaneName = 'WxEdit1_Pane'
+        Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+        Wx_Aui_Dockable_Direction = []
+        Wx_Aui_Pane_Style = []
+        Wx_Aui_Pane_Buttons = []
+        Wx_BestSize_Height = 0
+        Wx_BestSize_Width = 0
+        Wx_MinSize_Height = 0
+        Wx_MinSize_Width = 0
+        Wx_MaxSize_Height = 0
+        Wx_MaxSize_Width = 0
+        Wx_Floating_Height = 0
+        Wx_Floating_Width = 0
+        Wx_Floating_X_Pos = 0
+        Wx_Floating_Y_Pos = 0
+      end
+      object mTxDestinationTag: TWxEdit
+        Left = 466
+        Top = 53
+        Width = 113
+        Height = 23
+        BevelInner = bvNone
+        BevelOuter = bvNone
+        AutoSize = False
+        TabOrder = 13
+        Wx_BGColor = clBlack
+        Wx_Class = 'wxTextCtrl'
+        Wx_ControlOrientation = wxControlVertical
+        Wx_EditStyle = []
+        Wx_FGColor = clBlack
+        Wx_GeneralStyle = [wxDOUBLE_BORDER]
+        Wx_Hidden = False
+        Wx_IDName = 'ID_MTXDESTINATIONTAG'
+        Wx_IDValue = 1090
         Wx_MaxLength = 0
         Wx_PaneCaption = 'WxEdit1'
         Wx_PaneName = 'WxEdit1_Pane'
@@ -631,6 +703,7 @@ object frmNewForm: TfrmNewForm
         BevelOuter = bvNone
         AutoSize = False
         TabOrder = 6
+        EVT_TEXT = 'mTxSeqNumUpdated'
         Wx_BGColor = clBlack
         Wx_Class = 'wxTextCtrl'
         Wx_ControlOrientation = wxControlVertical
@@ -660,7 +733,7 @@ object frmNewForm: TfrmNewForm
       end
       object mTxSuspendPayment: TWxCheckBox
         Left = 10
-        Top = 174
+        Top = 182
         Width = 145
         Height = 17
         Caption = 'Escrow Payment  '
@@ -693,7 +766,7 @@ object frmNewForm: TfrmNewForm
       end
       object mTxBtnSign: TWxButton
         Left = 482
-        Top = 204
+        Top = 188
         Width = 105
         Height = 25
         Caption = 'Sign'
@@ -729,44 +802,9 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_X_Pos = 0
         Wx_Floating_Y_Pos = 0
       end
-      object mTxSourceWallet: TWxComboBox
-        Left = 138
-        Top = 12
-        Width = 281
-        Height = 23
-        ItemHeight = 15
-        TabOrder = 9
-        EVT_COMBOBOX = 'mTxSourceWalletSelected'
-        Wx_BGColor = clBlack
-        Wx_Class = 'wxComboBox'
-        Wx_ComboboxStyle = []
-        Wx_EditStyle = []
-        Wx_ControlOrientation = wxControlVertical
-        Wx_FGColor = clBlack
-        Wx_GeneralStyle = []
-        Wx_Hidden = False
-        Wx_IDName = 'ID_MTXSOURCEWALLET'
-        Wx_IDValue = 1022
-        Wx_PaneCaption = 'WxComboBox1'
-        Wx_PaneName = 'WxComboBox1_Pane'
-        Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-        Wx_Aui_Dockable_Direction = []
-        Wx_Aui_Pane_Style = []
-        Wx_Aui_Pane_Buttons = []
-        Wx_BestSize_Height = 0
-        Wx_BestSize_Width = 0
-        Wx_MinSize_Height = 0
-        Wx_MinSize_Width = 0
-        Wx_MaxSize_Height = 0
-        Wx_MaxSize_Width = 0
-        Wx_Floating_Height = 0
-        Wx_Floating_Width = 0
-        Wx_Floating_X_Pos = 0
-        Wx_Floating_Y_Pos = 0
-      end
       object mLabelMultiSigsWarning: TWxStaticText
         Left = 346
-        Top = 124
+        Top = 132
         Width = 246
         Height = 29
         Caption = 'Requires Multiple Signatures'
@@ -789,6 +827,39 @@ object frmNewForm: TfrmNewForm
         InvisibleFGColorString = 'CUS:255,0,0'
         Wx_PaneCaption = 'WxStaticText7'
         Wx_PaneName = 'WxStaticText7_Pane'
+        Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+        Wx_Aui_Dockable_Direction = []
+        Wx_Aui_Pane_Style = []
+        Wx_Aui_Pane_Buttons = []
+        Wx_BestSize_Height = 0
+        Wx_BestSize_Width = 0
+        Wx_MinSize_Height = 0
+        Wx_MinSize_Width = 0
+        Wx_MaxSize_Height = 0
+        Wx_MaxSize_Width = 0
+        Wx_Floating_Height = 0
+        Wx_Floating_Width = 0
+        Wx_Floating_X_Pos = 0
+        Wx_Floating_Y_Pos = 0
+      end
+      object WxStaticText9: TWxStaticText
+        Left = 466
+        Top = 24
+        Width = 87
+        Height = 19
+        Caption = 'Destination Tag'
+        TabOrder = 12
+        Wx_BGColor = clBlack
+        Wx_Class = 'wxStaticText'
+        Wx_ControlOrientation = wxControlVertical
+        Wx_FGColor = clBlack
+        Wx_GeneralStyle = []
+        Wx_Hidden = False
+        Wx_IDName = 'ID_WXSTATICTEXT9'
+        Wx_IDValue = 1089
+        Wx_LabelStyle = []
+        Wx_PaneCaption = 'WxStaticText5'
+        Wx_PaneName = 'WxStaticText5_Pane'
         Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
         Wx_Aui_Dockable_Direction = []
         Wx_Aui_Pane_Style = []
