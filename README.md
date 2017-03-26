@@ -21,6 +21,9 @@ Cold Wallet for XRP.
 On first launch, you will be asked for a password. 
 This password is used to generate an AES256 Key, which is used to encrypt your account database when stored to disk.
 
+##### Submitting your Transactions via QR Code
+
+You may use your phone to capture the QR Code using [Ripple Submit](https://binz.io/), which will allow you to immediately submit your transaction and view the result.
 
 ##### Creating an account
 
