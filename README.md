@@ -23,7 +23,7 @@ This password is used to generate an AES256 Key, which is used to encrypt your a
 
 ##### Submitting your Transactions via QR Code
 
-You may use your phone to capture the QR Code using [Ripple Submit](https://binz.io/), which will allow you to immediately submit your transaction and view the result.
+You may use your phone to capture the QR Code using [Ripple Submit](https://binz.io/), which will allow you to immediately submit your transaction to the network and view the result.
 
 ##### Creating an account
 
