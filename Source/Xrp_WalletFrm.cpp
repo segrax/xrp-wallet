@@ -363,7 +363,7 @@ void cXrp_WalletFrm::mTxBtnSignClick( wxCommandEvent& event ) {
 
         // Ensure we have atleast one executable state
         if (CancelTime || ExecuteTime || ProofText.size()) {
-            Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreateEscrow( Destination, AmountDrops, CancelTime, DestTag, ExecuteTime, ProofText ) ) );
+            Tx = std::make_shared<ripple::STTx>( std::move( Wallet->CreateEscrow( Destination, AmountDrops, CancelTime, ExecuteTime, DestTag, ProofText ) ) );
         } else {
             wxMessageBox( "No suspended payment options provided" );
             return;
