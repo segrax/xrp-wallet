@@ -31,9 +31,9 @@ You may use your phone to capture the QR Code using [Ripple Submit](https://binz
 2. Press 'Create Account'
 3. You will be shown the secret which has been generated (this can be shown again later)
 4. Double click the new account
-5. You can now take the new account address via two methods
-  a. Click 'Show QR Code'
-  b. Click 'Copy Address'
+5. You can now take the new account address via two methods  
+  a. Click 'Show QR Code'  
+  b. Click 'Copy Address'  
 6. Send the new account the minimum XRP required to activate it (20 at the time of writting)
 
 
